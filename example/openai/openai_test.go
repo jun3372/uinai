@@ -13,10 +13,10 @@ import (
 	"github.com/jun3372/uniai/request"
 )
 
-func Test_OpenAI(t *testing.T) {
-	token := os.Getenv("UINAI_API_OPENAI_TOKEN")
+func Test_Completions(t *testing.T) {
+	token := os.Getenv("UNIAI_API_OPENAI_TOKEN")
 	if token == "" {
-		t.Fatal("UINAI_API_OPENAI_TOKEN is empty")
+		t.Fatal("UNIAI_API_OPENAI_TOKEN is empty")
 	}
 
 	chat := uniai.New(
