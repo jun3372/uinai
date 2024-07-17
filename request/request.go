@@ -19,6 +19,7 @@ type Request struct {
 	Messages         []Messages `json:"messages,omitempty"`          // Messages 是一个消息切片，包含了请求中的消息内容
 	Stream           bool       `json:"stream,omitempty"`            // 默认为 false 如果设置,则像在 ChatGPT 中一样会发送部分消息增量。标记将以仅数据的服务器发送事件的形式发送,这些事件在可用时,并在 data: [DONE] 消息终止流。Python 代码示例。
 	Endpoint         string     `json:"-"`                           // EndPoint 是一个字符串，表示请求的端点
+	ChannelMaxLength int        `json:"-"`                           // ChannelMaxLength 是一个整数，表示通道的最大长度
 }
 
 // Messages 结构体用于表示一个消息，包含内容和角色信息
@@ -33,13 +34,14 @@ type Messages struct {
 func NewRequest(opts ...func(*Request)) *Request {
 	// 初始化Request结构体，默认设置了一些基本参数。
 	resp := &Request{
-		TopP:             0.8,          // 设置默认的 TopP 值为 0.8
+		TopP:             1,            // 设置默认的 TopP 值为 0.8
 		FrequencyPenalty: 0,            // 设置默认的 FrequencyPenalty 值为 0
 		PresencePenalty:  0,            // 设置默认的 PresencePenalty 值为 0
 		Temperature:      0,            // 设置默认的 Temperature 值为 0
 		Stop:             []string{},   // 设置默认的 Stop 切片为空
 		Messages:         []Messages{}, // 设置默认的 Messages 切片为空
 		Model:            "",           // 设置默认的 Model 值为空字符串
+		ChannelMaxLength: 100,
 	}
 
 	// 遍历所有传入的选项函数，并依次应用它们到Request实例上。

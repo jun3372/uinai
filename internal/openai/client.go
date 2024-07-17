@@ -72,6 +72,11 @@ func (h openai) Completions(opt client.Options, ctx context.Context, in request.
 	// 这里通过context.WithCancel函数创建了一个新的可取消上下文，并获取了相应的取消函数cancel。
 	var cancel context.CancelFunc
 	ctx, cancel = context.WithCancel(ctx)
+	defer func() {
+		if err != nil {
+			cancel()
+		}
+	}()
 
 	// 设置请求的上下文。
 	req = req.WithContext(ctx)
@@ -82,7 +87,7 @@ func (h openai) Completions(opt client.Options, ctx context.Context, in request.
 	}
 
 	// 创建一个用于接收响应的通道。
-	out := make(chan response.Response, 100)
+	out := make(chan response.Response, in.ChannelMaxLength)
 	go func() {
 		select {
 		case <-ctx.Done():

@@ -20,7 +20,8 @@ type Option func(*Options)
 // 通过遍历传入的 Option 参数，并对每个 Option 调用，将配置应用到新创建的 Options 实例上。
 func NewOptions(opts ...Option) *Options {
 	o := &Options{ // 创建一个 Options 结构体指针
-		Header: make(http.Header), // 初始化 header 字段为一个空的 http.Header 类型
+		Host:   "https://api.openai.com", // 设置默认的 Host
+		Header: make(http.Header),        // 初始化 header 字段为一个空的 http.Header 类型
 	}
 
 	o.Header.Add("Content-Type", "application/json")
