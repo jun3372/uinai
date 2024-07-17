@@ -3,6 +3,8 @@
 > 本SDK是一个精心设计的开发工具包，它不仅完美兼容 `OpenAI` 与 `千帆`  的API标准，还能统一调用两者的服务，采用与 `OpenAI` 一致的内容格式进行数据输出，极大地简化了开发者在不同平台间切换的工作流程。
 
 ### 使用方式
+> 更多渠道的示例请参考 [示例](https://github.com/jun3372/uniai/tree/main/example)
+
 ```golang
 package main
 
@@ -10,12 +12,13 @@ import (
 	"fmt"
 
 	"github.com/bytedance/sonic"
-    "github.com/jun3372/uniai"
+	"github.com/jun3372/uniai"
 	"github.com/jun3372/uniai/client"
 )
 
 func mian() {
-    chat := uniai.New(
+	token := "授权用的 token"
+	chat := uniai.New(
 		client.WithType(client.OpenAI),
 		client.WithHost("https://dashscope.aliyuncs.com/compatible-mode"),
 		client.AddHeader("Authorization", token),
@@ -34,7 +37,7 @@ func mian() {
 
 	resp, err := chat.Completions(context.Background(), in)
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
 
 	for item := range resp {
