@@ -1,4 +1,4 @@
-package openai
+package xfyun
 
 import (
 	"context"
@@ -10,22 +10,16 @@ import (
 	"github.com/alevinval/sse/pkg/decoder"
 	"github.com/bytedance/sonic"
 
+	"github.com/jun3372/uniai/client"
 	"github.com/jun3372/uniai/errorx"
-	"github.com/jun3372/uniai/internal/client"
 	"github.com/jun3372/uniai/request"
 	"github.com/jun3372/uniai/response"
 )
 
-// openai 结构体实现了 client.IClient 接口，用于与 OpenAI 服务进行交互。
-type openai struct{}
+type xfyun struct{}
 
-// NewClient 创建并返回一个 openai 实例，该实例实现了 client.IClient 接口。
-// 该函数是对外的接口，用于初始化 OpenAI 客户端。
-// 返回值:
-//
-//	*openai: 实现了 client.IClient 接口的实例，用于与 OpenAI 服务进行交互。
 func NewClient() client.IClient {
-	return &openai{}
+	return &xfyun{}
 }
 
 // Completions 方法用于获取补全建议。
@@ -40,7 +34,7 @@ func NewClient() client.IClient {
 //
 //	chan response.Response - 一个channel，用于接收补全响应的结果。
 //	error - 如果在请求过程中出现错误，将返回错误信息。
-func (h openai) Completions(opt client.Options, ctx context.Context, in request.Request) (chan response.Response, error) {
+func (h xfyun) Completions(opt client.Options, ctx context.Context, in request.Request) (chan response.Response, error) {
 	// 检查提供的主机地址是否为空，如果为空则返回错误。
 	if opt.Host == "" {
 		return nil, errorx.InvalidHost
@@ -121,42 +115,19 @@ func (h openai) Completions(opt client.Options, ctx context.Context, in request.
 	return out, nil
 }
 
-// handlerResponse 处理OpenAI的响应。
-// 它使用一个io.ReadCloser来解码响应体，并将解码后的响应发送到指定的通道。
-// 函数返回一个响应通道和可能的错误。
-// 参数:
-//
-//	reader io.ReadCloser - 用于读取和关闭响应体的接口。
-//	out chan response.Response - 用于发送解码后的响应的通道。
-//
-// 返回值:
-//
-//	error - 解码过程中可能出现的错误。
-func (openai) handlerResponse(reader io.ReadCloser, out chan response.Response, cancel context.CancelFunc) error {
-	defer cancel()
-	var resp response.Response
-	if err := sonic.ConfigDefault.NewDecoder(reader).Decode(&resp); err != nil {
-		slog.Error("openai Completions decode error", slog.String("error", err.Error()))
-		return err
-	}
-
-	out <- resp
-	return nil
-}
-
-// handlerResponse 处理响应的函数。
-// 该函数负责从reader中读取响应数据，并通过out通道发送处理结果。
+// handlerStream 处理流的函数。
+// 该函数负责从reader中读取流数据，并通过out通道发送处理结果。
 // cancel函数用于在需要时取消处理过程。
 // 参数:
 //
-//	reader: 一个io.ReadCloser接口，用于读取响应数据。
+//	reader: 一个io.ReadCloser接口，用于读取流数据。
 //	out: 一个response.Response类型的通道，用于发送处理结果。
 //	cancel: 一个函数，调用该函数可以取消处理过程。
 //
 // 返回值:
 //
 //	error - 解码过程中可能出现的错误。
-func (openai) handlerStream(reader io.ReadCloser, out chan response.Response, cancel context.CancelFunc) error {
+func (xfyun) handlerStream(reader io.ReadCloser, out chan response.Response, cancel context.CancelFunc) error {
 	defer cancel()
 
 	code := decoder.New(reader)
@@ -185,5 +156,29 @@ func (openai) handlerStream(reader io.ReadCloser, out chan response.Response, ca
 		}
 	}
 
+	return nil
+}
+
+// handlerResponse 处理响应的函数。
+// 该函数负责从reader中读取响应数据，并通过out通道发送处理结果。
+// cancel函数用于在需要时取消处理过程。
+// 参数:
+//
+//	reader: 一个io.ReadCloser接口，用于读取响应数据。
+//	out: 一个response.Response类型的通道，用于发送处理结果。
+//	cancel: 一个函数，调用该函数可以取消处理过程。
+//
+// 返回值:
+//
+//	error - 解码过程中可能出现的错误。
+func (xfyun) handlerResponse(reader io.ReadCloser, out chan response.Response, cancel context.CancelFunc) error {
+	defer cancel()
+	var resp response.Response
+	if err := sonic.ConfigDefault.NewDecoder(reader).Decode(&resp); err != nil {
+		slog.Error("openai Completions decode error", slog.String("error", err.Error()))
+		return err
+	}
+
+	out <- resp
 	return nil
 }

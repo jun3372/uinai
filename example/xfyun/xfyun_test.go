@@ -8,8 +8,8 @@ import (
 
 	"github.com/bytedance/sonic"
 
-	uniai "github.com/jun3372/uniai"
-	"github.com/jun3372/uniai/internal/client"
+	"github.com/jun3372/uniai"
+	"github.com/jun3372/uniai/client"
 	"github.com/jun3372/uniai/request"
 )
 

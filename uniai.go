@@ -5,15 +5,15 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/jun3372/uniai/internal/client"
-	"github.com/jun3372/uniai/internal/client/openai"
-	"github.com/jun3372/uniai/internal/client/xfyun"
+	"github.com/jun3372/uniai/client"
+	"github.com/jun3372/uniai/client/openai"
+	"github.com/jun3372/uniai/client/xfyun"
 	"github.com/jun3372/uniai/request"
 	"github.com/jun3372/uniai/response"
 )
 
 // IUinai 接口定义了UI nai需要实现的方法
-type IUinai interface {
+type iuinai interface {
 	Completions(ctx context.Context, in request.Request) (chan response.Response, error) // 该方法用于处理请求并返回补全结果
 }
 
@@ -27,7 +27,7 @@ type uinai struct {
 // New 函数用于创建一个新的 uinai 实例
 // 它接受一个可变参数列表 opts，每个元素都是一个 Option 类型的函数
 // 这些函数会依次应用到新创建的 uinai 实例的 opts 字段上
-func New(opts ...client.Option) IUinai {
+func New(opts ...client.Option) iuinai {
 	// 创建一个新的 uinai 实例，使用结构体 uinai 和指针 opts
 	resp := &uinai{
 		opts: client.NewOptions(opts...), // 初始化 opts 为空 Options
