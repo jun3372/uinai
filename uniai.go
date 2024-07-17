@@ -5,11 +5,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/jun3372/uinai/internal/client"
-	"github.com/jun3372/uinai/internal/client/openai"
-	"github.com/jun3372/uinai/internal/client/xfyun"
-	"github.com/jun3372/uinai/request"
-	"github.com/jun3372/uinai/response"
+	"github.com/jun3372/uniai/internal/client"
+	"github.com/jun3372/uniai/internal/client/openai"
+	"github.com/jun3372/uniai/internal/client/xfyun"
+	"github.com/jun3372/uniai/request"
+	"github.com/jun3372/uniai/response"
 )
 
 // IUinai 接口定义了UI nai需要实现的方法

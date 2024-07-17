@@ -3,8 +3,8 @@ package client
 import (
 	"context"
 
-	"github.com/jun3372/uinai/request"
-	"github.com/jun3372/uinai/response"
+	"github.com/jun3372/uniai/request"
+	"github.com/jun3372/uniai/response"
 )
 
 // IClient 接口定义了客户端应提供的完成请求的方法。

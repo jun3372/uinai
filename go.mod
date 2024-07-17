@@ -1,4 +1,4 @@
-module github.com/jun3372/uinai
+module github.com/jun3372/uniai
 
 go 1.22
 

@@ -10,10 +10,10 @@ import (
 	"github.com/alevinval/sse/pkg/decoder"
 	"github.com/bytedance/sonic"
 
-	"github.com/jun3372/uinai/errorx"
-	"github.com/jun3372/uinai/internal/client"
-	"github.com/jun3372/uinai/request"
-	"github.com/jun3372/uinai/response"
+	"github.com/jun3372/uniai/errorx"
+	"github.com/jun3372/uniai/internal/client"
+	"github.com/jun3372/uniai/request"
+	"github.com/jun3372/uniai/response"
 )
 
 type xfyun struct{}

@@ -8,9 +8,9 @@ import (
 
 	"github.com/bytedance/sonic"
 
-	uniai "github.com/jun3372/uinai"
-	"github.com/jun3372/uinai/internal/client"
-	"github.com/jun3372/uinai/request"
+	uniai "github.com/jun3372/uniai"
+	"github.com/jun3372/uniai/internal/client"
+	"github.com/jun3372/uniai/request"
 )
 
 func Test_OpenAI(t *testing.T) {
